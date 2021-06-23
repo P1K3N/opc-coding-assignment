@@ -18,14 +18,6 @@ module.exports.getStoriesWordCountHNAPI = async () => {
         };
     }
 
-    // get the last story - to pickup our initial Offset
-    // Here with some more time I would probably improve the following scenario:
-    // Lets say HN is having less activity by its users. We could check the time of the last story to check
-    // how far/close are we from our initial date 
-
-    let lastStory = await hackerNewsService.getSingleItem(stories.data[stories.data.length - 1]);
-
-
     // We use two maps to have a data structure that we can access during the promisses resolution 
     // WordToCount -> will contain a count per each word we find in story's title
     // executionInfoMap -> This is the map that will allow us to control the search for stories from 7 days
@@ -36,7 +28,7 @@ module.exports.getStoriesWordCountHNAPI = async () => {
     const wordToCountMap = new Map();
 
     const executionInfoMap = new Map();
-    executionInfoMap.set('offset', lastStory.id);
+    executionInfoMap.set('offset', stories.data[stories.data.length - 1]);
     executionInfoMap.set('approachingInitialDate', false);
     executionInfoMap.set('passedInitialDate', false);
     executionInfoMap.set('numberOfStories', 0);
