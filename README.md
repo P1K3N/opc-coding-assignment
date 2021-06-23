@@ -5,7 +5,7 @@
 - npm install 
 - npm start
 
-make a GET to http://localhost:8000/words to get the 10 words count of the stories from the 7 days before today
+make a GET to http://localhost:8000/words to get the 10 words count of the stories from the 7 days before today, it may take a while it will always depend on how much records we are ahead to the records we want to look for.
 
 ### Application dependencies 
 
