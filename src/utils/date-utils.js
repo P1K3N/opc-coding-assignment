@@ -4,30 +4,35 @@ const lastWeekDateStart = moment().subtract(7, 'days').startOf('day').format();
 const lastWeekDateEnd = moment().subtract(7, 'days').endOf('day').format();
 
 
+// evaluateDate 
+// This method evaluates if the itemDate has already passed our initialDate
+// and if it is will set the flag on the map 
+// Will check if itemDate is approaching or has passed a closeTimestamp to our date 
+// returns a boolean - true if itemDate is inside our date(7 days ago) and false if it is not
 
-// method to check if a given date is inside the beginning and the end of the day (7 days ago)
-const isDateInsideAllowedRange = (itemDate) => {
+const evaluateDate = (itemDate, map) => {
+
     let itemDateUTC = formatDateToUTC(itemDate);
 
-   return moment(itemDateUTC).isBefore(lastWeekDateEnd) && moment(itemDateUTC).isAfter(lastWeekDateStart);
+    let closeTimestamp = moment(lastWeekDateStart).subtract(1, 'hours').format();
+
+    // Break condition for the while loop - when we've passed the date there's nothing more to count!
+    if (moment(itemDateUTC) < moment(lastWeekDateStart)) {
+        map.set('passedDate', true);
+    }
+
+    // are you approaching the initial date or have passed the closeTimestamp to initial date
+    // we'll be making to decrement our id's to the batches one by one
+    if (moment(itemDateUTC) > moment(closeTimestamp)) {
+        map.set('approachingInitialDate', true);
+    }
+
+    // check if the item is inside the timestamp range that we want 
+    return moment(itemDateUTC).isBefore(lastWeekDateEnd) && moment(itemDateUTC).isAfter(lastWeekDateStart);
+
 };
 
-module.exports.isDateInsideAllowedRange = isDateInsideAllowedRange;
-
-const isDateBeforeStartDate = (itemDate) => {
-    let itemDateUTC = formatDateToUTC(itemDate);
-    return moment(itemDateUTC) < moment(lastWeekDateStart); 
-};
-
-module.exports.isDateBeforeStartDate = isDateBeforeStartDate;
-
-const isDateApproachingInitialDate = (itemDate) => {
-    let closeTimestamp = moment(lastWeekDateStart).subtract(1,'hours').format();
-    let itemDateUTC = formatDateToUTC(itemDate);
-    return moment(itemDateUTC) > moment(closeTimestamp);
-};
-
-module.exports.isDateApproachingInitialDate = isDateApproachingInitialDate;
+module.exports.evaluateDate = evaluateDate;
 
 const formatDateToUTC = (unixTimeStamp) => {
     return moment(unixTimeStamp, 'X').format();

@@ -30,11 +30,11 @@ module.exports.getStoriesWordCountHNAPI = async () => {
     const executionInfoMap = new Map();
     executionInfoMap.set('offset', stories.data[stories.data.length - 1]);
     executionInfoMap.set('approachingInitialDate', false);
-    executionInfoMap.set('passedInitialDate', false);
+    executionInfoMap.set('passedDate', false);
     executionInfoMap.set('numberOfStories', 0);
 
     console.log('Beggining to work the batches array, it may take a while :)')
-    while (executionInfoMap.get('passedInitialDate') != true) {
+    while (executionInfoMap.get('passedDate') != true) {
 
         // createBatchArrays to perform the requests later on Promise.ALL to avoid block our function with async/await.
         // with an async / await approach we would block all of our project and the event loop
@@ -52,20 +52,8 @@ module.exports.getStoriesWordCountHNAPI = async () => {
                         continue;
                     }
 
-                    // Break condition for the while loop - when we've passed the date there's nothing more to count!
-                    if (result.time != null && dateUtils.isDateBeforeStartDate(result.time)) {
-                        executionInfoMap.set('passedInitialDate', true);
-                    }
-
-                    // once we are arriving to our initial datetime that we want to look for stories 
-                    // our batches will start to request for each id (one by one )
-                    // instead of batches of id -> id-100 to fast up our search 
-                    if (dateUtils.isDateApproachingInitialDate(result.time)) {
-                        executionInfoMap.set('approachingInitialDate', true);
-                    }
-
-                   // if the date is out of our interest let's pass to the next result
-                    if (!dateUtils.isDateInsideAllowedRange(result.time)) {
+                    // evaluating item date and if necessary update the variables of our executionInfoMap
+                    if (result.time != null && !dateUtils.evaluateDate(result.time, executionInfoMap)) {
                         continue;
                     }
 
