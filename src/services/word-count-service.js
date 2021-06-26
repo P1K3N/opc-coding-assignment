@@ -53,6 +53,7 @@ module.exports.getStoriesWordCountHNAPI = async () => {
                     }
 
                     // evaluating item date and if necessary update the variables of our executionInfoMap
+                    // if the date is outside of our range we continue to the next result 
                     if (result.time != null && !dateUtils.evaluateDate(result.time, executionInfoMap)) {
                         continue;
                     }
