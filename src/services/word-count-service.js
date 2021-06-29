@@ -1,3 +1,5 @@
+"use strict";
+
 const hackerNewsService = require('./hacker-news-service');
 const textUtils = require('../utils/text-utils');
 const mapUtils = require('../utils/map-utils');
@@ -7,9 +9,9 @@ const arrayUtils = require('../utils/array-utils');
 
 
 module.exports.getStoriesWordCountHNAPI = async () => {
-    // TODO CHECK ERRORS
     // get the stories id's from HN API
     let stories = await hackerNewsService.getStories();
+
     // HN API Error - it may indicate that the API is unavailable...
     if (!stories.success) {
         return {

@@ -1,3 +1,5 @@
+"use strict";
+
 const hackerNewsService = require('../services/hacker-news-service');
 
 

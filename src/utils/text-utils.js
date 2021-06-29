@@ -1,4 +1,5 @@
 "use strict";
+
 const addToMap = require('./map-utils').addWordToMap;
 
 

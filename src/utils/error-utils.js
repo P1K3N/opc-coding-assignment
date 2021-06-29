@@ -1,3 +1,5 @@
+"use strict";
+
 // Although I'm not doing nothing here just to point out 
 // that here we should choose what to do with errors
 

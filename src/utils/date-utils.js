@@ -1,3 +1,5 @@
+"use strict";
+
 const moment = require('moment');
 
 const lastWeekDateStart = moment().subtract(7, 'days').startOf('day').format();
